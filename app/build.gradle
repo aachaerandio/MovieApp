@@ -1,8 +1,15 @@
 apply plugin: 'com.android.application'
 
+def getApiKey(String property){
+    Properties properties = new Properties()
+    properties.load(new FileInputStream("local.properties"))
+    return "\"" + properties.getProperty(property) +"\""
+}
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
+
     defaultConfig {
         applicationId "com.aachaerandio.movieapp"
         minSdkVersion 16
@@ -10,6 +17,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "TMDB_API_KEY", getApiKey("tmdb_api_key")
+        buildConfigField "String", "TMDB_BASE_URL", "\"http://api.themoviedb.org/\""
     }
     buildTypes {
         release {
@@ -32,5 +42,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     testCompile 'junit:junit:4.12'
 }
